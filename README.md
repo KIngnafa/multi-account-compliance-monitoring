@@ -15,7 +15,7 @@ This project demonstrates how to centralize compliance evidence across multiple 
 ---  
 
 🔸 **Workflow**  
-1. **Initial Attempt (Unethical / Quick & Dirty)** – Enabled Config + Security Hub separately in each account (mgmt + dev). Each account had its own S3 bucket, creating silos. Findings were isolated, with no single source of truth. This approach was inefficient, audit-unfriendly, and not scalable.  
+1. **Initial Attempt (Unethical / Quick & Dirty)** – Enabled Config + Security Hub separately in each account (mgmt + dev). Each account had its own S3 bucket, and findings had to be reviewed per account. There was technically a single source of truth, but it required more manual effort, made evidence collection slower, and was not scalable for audits.  
 2. **Best Practice Implementation (Enterprise Way)** – Created a single evidence bucket in the management account. Applied a cross-account S3 bucket policy to allow member accounts to deliver Config logs securely. Designated the management account as the Security Hub aggregator. Verified findings from both mgmt + dev appear in the mgmt console and Config logs flow into the central bucket.  
 
 ---  
