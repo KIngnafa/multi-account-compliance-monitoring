@@ -40,4 +40,4 @@ This project demonstrates how to centralize compliance evidence across multiple 
 - [AWS Config Documentation](https://docs.aws.amazon.com/config/)  
 - [AWS Security Hub Documentation](https://docs.aws.amazon.com/securityhub/)  
 - [DISA STIGs & NIST 800-53](https://public.cyber.mil/stigs/)  
-- [Google Doc – Full Project Documentation](#)  
+- [Google Doc – Full Project Documentation](https://docs.google.com/document/d/1OARSofYsNZeJ0irZ5dL3j_ZoxBIBZUzjHpnDM6Nyu_M/edit?usp=sharing)  
