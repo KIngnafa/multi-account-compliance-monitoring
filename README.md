@@ -1,82 +1,43 @@
-📌 AWS Multi-Account Compliance Architecture
+# 📌 AWS Multi-Account Compliance Architecture  
 
-🔸 Project Overview
-This project demonstrates an enterprise-style compliance architecture in AWS. It centralizes compliance evidence across multiple accounts by forwarding AWS Config logs and AWS Security Hub findings into a single management account.
+🔸 **Project Overview**  
+This project demonstrates how to centralize compliance evidence across multiple AWS accounts using AWS Config and AWS Security Hub. It simulates an enterprise/GovCloud-style compliance setup, where findings and logs from member accounts are aggregated into a single management account for audit readiness and continuous monitoring.  
 
-The workflow simulates how cleared GovCloud and enterprise environments aggregate compliance data for audit readiness, continuous monitoring, and RMF documentation.
+---  
 
-🔸 Tools & Services
+🔸 **Tools & Services**  
+- **AWS Config** – resource state tracking, configuration history  
+- **AWS Security Hub** – compliance/security findings (CIS, AWS Best Practices, NIST 800-53)  
+- **Amazon S3 (Central Evidence Bucket)** – encrypted, versioned compliance log storage  
+- **Cross-Account S3 Bucket Policy** – secure delivery of logs from member accounts  
+- **EventBridge (optional)** – export Security Hub findings into S3  
 
-AWS Config – resource state tracking, compliance snapshots
+---  
 
-AWS Security Hub – compliance/security findings (CIS, AWS Best Practices, NIST 800-53)
+🔸 **Workflow**  
+1. **Initial Attempt (Unethical / Quick & Dirty)** – Enabled Config + Security Hub separately in each account (mgmt + dev). Each account had its own S3 bucket, creating silos. Findings were isolated, with no single source of truth. This approach was inefficient, audit-unfriendly, and not scalable.  
+2. **Best Practice Implementation (Enterprise Way)** – Created a single evidence bucket in the management account. Applied a cross-account S3 bucket policy to allow member accounts to deliver Config logs securely. Designated the management account as the Security Hub aggregator. Verified findings from both mgmt + dev appear in the mgmt console and Config logs flow into the central bucket.  
 
-S3 (central evidence bucket) – encrypted, versioned evidence storage
+---  
 
-Cross-Account S3 Bucket Policy – secure log delivery from member accounts
+🔸 **Evidence (Screenshots / Reports)**  
+- S3 bucket with both mgmt + dev Config logs (`AWSLogs/<AccountID>/Config/...`)  
+- Security Hub console showing findings from management + dev accounts  
+- Cross-account bucket policy JSON  
+- Example Security Hub finding JSON exported to S3  
 
-EventBridge (optional) – export Security Hub findings into S3 for long-term storage
+---  
 
-🔸 Two Approaches: Lessons Learned
+🔸 **Key Takeaways**  
+- Learned the difference between siloed setups vs centralized compliance.  
+- Built a scalable enterprise-style architecture for compliance evidence.  
+- Gained hands-on with cross-account permissions and aggregator setup.  
+- Demonstrated continuous monitoring practices aligned with GovCloud/FedRAMP standards.  
 
-1. The “Unethical” / Quick & Dirty Way (What I Tried First)
+---  
 
-Enabled Config + Security Hub manually in each account.
-
-Each account had its own S3 bucket, creating silos.
-
-Findings stayed isolated in each account.
-
-Result = duplication, audit blind spots, and no central visibility.
-
-This violated best practices — an auditor would have to log into multiple accounts to piece compliance together.
-
-2. The Best Practice / Enterprise Way (Final Implementation)
-
-Built a single evidence bucket in the management account.
-
-Applied a cross-account bucket policy so the dev account could write logs into mgmt’s bucket.
-
-Designated the management account as Security Hub aggregator to collect findings org-wide.
-
-Verified centralized evidence: both Config logs + Security Hub findings now land in mgmt.
-
-Result = scalable, audit-ready architecture that mirrors how GovCloud / DoD teams operate.
-
-📌 Key Lesson
-The wrong approach works short-term but creates chaos.
-The right approach builds centralized, automated, and scalable compliance visibility across the organization.
-
-🔸 Workflow
-
-Central Evidence Bucket – created in mgmt with versioning + SSE-KMS.
-
-AWS Config – mgmt + dev accounts deliver logs into the central bucket (AWSLogs/<AccountID>/Config/...).
-
-Security Hub – mgmt account acts as the aggregator, collecting findings from dev + mgmt.
-
-Cross-Account Policies – ensure secure log delivery without exposing public access.
-
-Evidence Validation – confirmed logs + findings centralized in mgmt account.
-
-🔸 Evidence (Screenshots / Reports)
-
-S3 bucket showing both mgmt + dev Config logs
-
-Security Hub console displaying findings from multiple accounts
-
-Bucket policy JSON (cross-account delivery)
-
-Sample Security Hub finding JSON stored in S3
-
-🔸 Key Takeaways
-
-✅ Centralized compliance evidence → single source of truth
-
-✅ Cross-account bucket policies designed securely
-
-✅ Aggregated Security Hub findings → one pane of glass
-
-✅ Mirrors enterprise / GovCloud compliance workflows
-
-✅ Prepares foundation for Step 4: ATO documentation (POA&M, control mapping)
+## 📚 References & Documentation  
+- [AWS Config Documentation](https://docs.aws.amazon.com/config/)  
+- [AWS Security Hub Documentation](https://docs.aws.amazon.com/securityhub/)  
+- [DISA STIGs & NIST 800-53](https://public.cyber.mil/stigs/)  
+- [Google Doc – Full Project Documentation](#)  
